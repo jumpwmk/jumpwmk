@@ -1,0 +1,20 @@
+{
+  "name": "nsc",
+  "version": "0.0.1",
+  "description": "nschuakuy",
+  "main": "test.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nsc"
+  ],
+  "author": "jumpwmk",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
