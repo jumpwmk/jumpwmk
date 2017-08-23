@@ -1,52 +1,47 @@
-#include <stdio.h>
-#include <ctime>
-#include <cstdlib>
-#include <algorithm>
-#include <string.h>
-#include <queue>
-#define mn(a,b) a<b ? a:b
-#define mx(a,b) a>b ? a:b
-#define INF 1000000000
-
+#include<bits/stdc++.h>
 using namespace std;
-
-struct pt
-{
-	int ii,jj,kk,t;
-};
-
-pt add(int ii,int jj,int kk,int t)
-{
-	pt tmp;
-	tmp.ii = ii, tmp.jj = jj, tmp.kk = kk, tmp.t = t;
-	return tmp;
-}
-
-
+long long p[110];
 int main()
 {
-	int i,j,k,tmp, t = 100000, n = 30, r = 30, c = 30;
-	srand(time(NULL));
-	freopen("../test.in","r",stdin);
-	freopen("../1.in","w",stdout);
-	printf("%d %d %d\n",r,c,n);
-	for(i = 0; i < n; i++)
-	{
-		for(j = 0; j < r; j++)
-		{
-			for(k = 0; k < c; k++)
-			{
-				int tmp = rand()%20;
-				if(tmp == 0)
-				{
-
-				}
-				if(tmp % 2 == 0)
-				{
-					printf("")
-				}
-			}
-		}
-	}
-	return 0;
+    int Q;
+    scanf("%d",&Q);
+    while(Q--)
+    {
+        int n;
+        long long a,b,now = 0,mx,ans,tmp;
+        scanf("%d",&n);
+        for(int i=1; i<=n; i++)
+            scanf("%lld",&p[i]);
+        sort(p+1,p+n+1);
+        scanf("%lld %lld",&a,&b);
+        int s = lower_bound(p+1,p+n+1,a) - p;
+        if(s == n+1)
+        {
+            printf("%lld\n",b);
+            continue;
+        }
+        now = p[s] - a;
+        if(now > p[s-1] - a && s-1 != 0)
+            now = abs(a-p[s-1]),s--;
+        mx = now,ans = a;
+        for(int i=s+1; i<=n; i++)
+        {
+            if(p[i-1] < a)
+                continue;
+            now = p[i]-p[i-1];
+            now = now/2;
+            tmp = min(b,p[i-1]+now);
+            now = min(abs(tmp-p[i]),abs(tmp-p[i-1]));
+            if(now > mx)
+                mx = now,ans = tmp;
+        }
+        if(b >= p[n])
+        {
+            now = b-p[n];
+            if(now > mx)
+                mx = now,ans = b;
+        }
+        printf("%lld\n",ans);
+    }
+    return 0;
 }

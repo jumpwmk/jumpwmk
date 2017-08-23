@@ -1,109 +1,70 @@
 #include <stdio.h>
-#include <algorithm>
-#include <map>
-#define mn(a,b) a<b ? a:b
-#define mx(a,b) a>b ? a:b
-#define INF 1000000000
 
+// using namespace std;
+
+/*input
+0 0 0
+2
+0 1 0 1 1 0
+*/
+#include <cstdio>
+#include <iostream>
+#include <cstring>
+#include <cmath>
 using namespace std;
-
-struct pt
-{
-	int x,y,z;
-	bool operator<(const pt &a)const
-	{
-		if(x == a.x)
-		{
-			if(y == a.y)
-				return z < a.z;
-			return y < a.y;
-		}
-		return x < a.x;
-	}
+struct vec{
+	double x,y,z;
 };
-
-struct data
-{
-	int i,w;
-	bool operator<(const data &a)const
-	{
-		if(w == a.w)
-			return i < a.i;
-		return w < a.w;
-	}
-};
-
-pt x[100100];
-map <int , map <int, data> > m;
-
+double abso(vec a){
+	return sqrt(a.x*a.x+a.y*a.y+a.z*a.z);
+}
+double dot(vec a,vec b){
+	return (a.x*b.x+a.y*b.y+a.z*b.z);
+}
 int main()
 {
-	int i,j,n,zz,nn,w1,w2;
-	double ans = 0;
 	// freopen("../test.in","r",stdin);
 	// freopen("../test.out","w",stdout);
-	scanf("%d",&n);
-	for(i = 0; i < n; i++)
-	{
-		scanf("%d %d %d",&x[i].x,&x[i].y,&x[i].z);
+	int l,type;
+	double x,y,z;
+	cin >> x >> y >>z;
+	cin >> type;
+	if (type == 1){
+		double x2,y2,z2;
+		cin >> x2 >> y2 >> z2;
+		printf("%lf %lf %lf",2*(x2-x)+x,2*(y2-y)+y,2*(z2-z)+z);
 	}
-	for (int i = 0; i < n; ++i)
-	{
-		if(ans < min(x[i].x/2.0,min(x[i].y/2.0,x[i].z/2.0)))
-		{
-			nn = 1,w1 = i + 1;
-			ans = min(x[i].x/2.0,min(x[i].y/2.0,x[i].z/2.0));
-		}
-		
-		zz = x[i].z + max(m[x[i].x][x[i].y].w,m[x[i].y][x[i].x].w);
-		if(ans < min(x[i].x/2.0,min(x[i].y/2.0,zz/2.0)))
-		{
-			nn = 2,w1 = i + 1;
-			if(m[x[i].x][x[i].y].w > m[x[i].y][x[i].x].w)
-				w2 = m[x[i].x][x[i].y].i + 1;
-			else
-				w2 = m[x[i].y][x[i].x].i + 1;
-			ans = min(x[i].x/2.0,min(x[i].y/2.0,zz/2.0));
-		}
-
-		zz = x[i].y + max(m[x[i].x][x[i].z].w,m[x[i].z][x[i].x].w);
-		if(ans < min(x[i].x/2.0,min(x[i].z/2.0,zz/2.0)))
-		{
-			nn = 2,w1 = i + 1;
-			if(m[x[i].x][x[i].z].w > m[x[i].z][x[i].x].w)
-				w2 = m[x[i].x][x[i].z].i + 1;
-			else
-				w2 = m[x[i].z][x[i].x].i + 1;
-			ans = min(x[i].x/2.0,min(x[i].z/2.0,zz/2.0));
-		}
-
-		zz = x[i].x + max(m[x[i].y][x[i].z].w,m[x[i].z][x[i].y].w);
-		if(ans < min(x[i].y/2.0,min(x[i].z/2.0,zz/2.0)))
-		{
-			nn = 2,w1 = i + 1;
-			if(m[x[i].y][x[i].z].w > m[x[i].z][x[i].y].w)
-				w2 = m[x[i].y][x[i].z].i + 1;
-			else
-				w2 = m[x[i].z][x[i].y].i + 1;
-			ans = min(x[i].y/2.0,min(x[i].z/2.0,zz/2.0));
-		}
-
-		data chk;
-		chk.i = i;
-		chk.w = x[i].z;
-		m[x[i].x][x[i].y] = max(m[x[i].x][x[i].y],chk);
-
-		chk.i = i;
-		chk.w = x[i].x;
-		m[x[i].y][x[i].z] = max(m[x[i].y][x[i].z],chk);
-
-		chk.i = i;
-		chk.w = x[i].y;
-		m[x[i].x][x[i].z] = max(m[x[i].x][x[i].z],chk);
+	if (type == 2){
+		vec v1,v2,m,temp,a,bp,last_vec;
+		double size_a,dots;
+		cin >> v1.x >> v1.y >> v1.z >> v2.x >> v2.y >> v2.z;
+		a.x = v2.x-v1.x;
+		a.y = v2.y-v1.y;
+		a.z = v2.z-v1.z;
+		bp.x = x-v2.x;
+		bp.y = y-v2.y;
+		bp.z = z-v2.z;
+		size_a = abso(a);
+		size_a *= size_a;
+		dots = dot(bp,a);
+		a.x *= (dots/size_a);
+		a.y *= (dots/size_a);
+		a.z *= (dots/size_a);
+		m.x = v2.x+a.x;
+		m.y = v2.y+a.y;
+		m.z = v2.z+a.z;
+		last_vec.x = 2*(m.x-x);
+		last_vec.y = 2*(m.y-y);
+		last_vec.z = 2*(m.z-z);
+		printf("%lf %lf %lf",last_vec.x+x,last_vec.y+y,last_vec.z+z);
 	}
-	printf("%d\n",nn);
-	if(nn == 1)
-		printf("%d\n",w1);
-	else printf("%d %d\n",w2,w1);
-	return 0;
+	if(type == 3){
+		double a,b,c,d;
+		cin >> a >> b >> c >> d;
+		double t = (d - a*x - b*y - c*z) / (a*a + b*b + c*c);
+		double x1 = a * t + x;
+		double y1 = b * t + y;
+		double z1 = c * t + z;
+		printf("%lf %lf %lf",2*(x1-x)+x,2*(y1-y)+y,2*(z1-z)+z);
+	}
 }
